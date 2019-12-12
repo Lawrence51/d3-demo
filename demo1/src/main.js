@@ -1,7 +1,13 @@
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from 'vue';
+import vueRouter from "vue-router";
+import ElementUI from "element-ui";
+import router from "./routes"
+import App from './App.vue';
+
+Vue.use(vueRouter);
+Vue.use(ElementUI);
 
 new Vue({
-  el: '#app',
-  render: h => h(App)
-})
+  render: h => h(App),
+  router
+}).$mount('#app');

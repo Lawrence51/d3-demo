@@ -1,48 +1,51 @@
 <template>
   <div id="app">
-    <p></p>
-    <p></p>
-    <p></p>
+    <div class="menu-main-left-container">
+      <el-menu
+        :default-active="activeLink"
+        :unique-opened="true"
+        :router="true"
+        :collapse="isCollapse"
+        class="menu-main-left"
+      ></el-menu>
+    </div>
+    <transition name="el-fade-in">
+      <router-view class="container">
+        <!-- 这里是不被缓存的视图组件 -->
+      </router-view>
+    </transition>
   </div>
 </template>
-
 <script>
-import * as d3 from "d3";
 export default {
-  name: 'app',
-  data () {
-    return {
-      
-    }
+  data() {
+    return{
+      activeLink: "",
+      isCollapse: false
+    };
   },
-  mounted(){
-    // console.log(d3,'d3')
-    let p = d3.selectAll('p')
-    // console.log(p)
-    var arr = [3,6,9,12,15]
-    
-    //更新
-    var update = p.data(arr);
-    //update 处理方法
-    update.text(d=>d)
-    console.log(update)
-
-    //数组长度大于dom的长度，这部分使用enter
-    let enter = update.enter();
-    console.log(update);
+  methods: {
+    //侧边栏点击事件
+    menuLink(link) {
+      if (link) window.open(link);
+    },
+    toggleClick() {
+      this.isCollapse = !this.isCollapse;
+    },
   }
-}
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
 
-h1, h2 {
+h1,
+h2 {
   font-weight: normal;
 }
 
@@ -55,5 +58,4 @@ li {
   display: inline-block;
   margin: 0 10px;
 }
-
 </style>
