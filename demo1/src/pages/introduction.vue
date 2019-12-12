@@ -9,7 +9,7 @@
 <script>
 import * as d3 from "d3";
 export default {
-  name: "desc",
+  name: "introduction",
   data() {
     return {};
   },

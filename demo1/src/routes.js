@@ -5,7 +5,7 @@ const constRouters = [
     {
         path: "/",
         name: "desc",
-        component: resolve => require(["./pages/desc"], resolve),
+        component: resolve => require(["./pages/introduction"], resolve),
         meta: { isMenu: true }
     },
     {
