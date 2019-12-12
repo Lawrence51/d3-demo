@@ -1,14 +1,5 @@
 <template>
   <div id="app">
-    <div class="menu-main-left-container">
-      <el-menu
-        :default-active="activeLink"
-        :unique-opened="true"
-        :router="true"
-        :collapse="isCollapse"
-        class="menu-main-left"
-      ></el-menu>
-    </div>
     <transition name="el-fade-in">
       <router-view class="container">
         <!-- 这里是不被缓存的视图组件 -->
