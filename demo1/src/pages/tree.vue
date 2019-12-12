@@ -53,7 +53,7 @@ export default {
       //请求数据 json()基于ajax， v5 更改为promise
       d3.json('/data/city.json')
       .then(data=>{
-          console.log(data)
+          
       }).catch(err=>{
           console.log(err)
       })
