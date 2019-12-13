@@ -46,7 +46,7 @@ export default {
 
       // 3.对角线生成器
       // d3.svg.diagonal对角线生成器 v5 已更换
-      // diagonal.projection 设置或选择一个点作为转换
+      // diagonal.projection 设置或选择一个点作为转换 90度旋转
       let diagonal = d3.svg.diagonal().projection(function(d) {
         return [d.y, d.x];
       });
@@ -59,8 +59,8 @@ export default {
 
         // b) 生成连线
         let link = svg
-          .selectAll(".link")
-          .data(links)
+          .selectAll(".link") //获取dom，此刻没有通过enter获取，仍旧有效用
+          .data(links) //遍历
           .enter()
           .append("path")
           .attr("class", "link")
