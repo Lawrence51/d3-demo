@@ -18,7 +18,7 @@
 <script>
 import * as d3 from "d3";
 export default {
-  name: "tree",
+  name: "xmind",
   data() {
     return {
       root: null
@@ -30,21 +30,19 @@ export default {
   methods: {
     getRoot() {},
     initSvg() {
-      let width = 500,
-        height = 500;
-
+      let width = 800,
+        height = 600;
+      let xPadding = { left: 80, right: 50, top: 20, bottom: 20 };
       let svg = d3
         .select("#svgcontainer")
         .append("svg") //插入SVG
-        .attr("width", width) //设置属性
-        .attr("height", height) //设置属性
+        .attr("width", width + xPadding.left + xPadding.right) //设置属性
+        .attr("height", height + xPadding.top + xPadding.bottom) //设置属性
         .append("g") //插入g元素
-        .attr("transform", "translate(50,0)");
+        .attr("transform", `translate(${xPadding.left},${xPadding.top})`);
 
-      // 2.生成树状布局，设置尺寸 d3.layout.tree() 大小自己随意定
-      // 默认从上至下 所以 hei
-      let tree = d3.layout.tree()
-      .size([width, height - 200]); 
+      // 2.生成树状布局，设置尺寸 d3.layout.tree
+      let tree = d3.layout.tree().size([height, height]);
 
       // 3.对角线生成器
       // d3.svg.diagonal对角线生成器 v5 已更换
@@ -54,7 +52,7 @@ export default {
       });
 
       //请求数据 json()基于ajax， v5 更改为promise
-      d3.json("/data/city.json", function(err, root) {
+      d3.json("/data/web.json", function(err, root) {
         // a) 获取节点数组 nodes 和 连接数组 links
         var nodes = tree.nodes(root);
         var links = tree.links(nodes);
@@ -81,17 +79,15 @@ export default {
 
         // d） 加圆圈
         node.append("circle").attr("r", 5);
-        console.log(node)
         // e) 加上文本
-        node.append("text").text(d => d.name)
-        .attr("dx", d => (d.children ? -15 : 15)) //根绝是否有子节点来决定文字展示的位置，以免遮盖子节点 横向
-        //.attr('dy', 0) //功能同上 纵向 值为0时可不写
-        .attr('text-anchor',d=>{
-          return d.children ? 'end' : 'start' // text-anchor属性控制文本样式 start右上 end左下 middle中间
-        })
-
-
-
+        node
+          .append("text")
+          .text(d => d.name)
+          .attr("dx", d => (d.children ? -15 : 15)) //根绝是否有子节点来决定文字展示的位置，以免遮盖子节点 横向
+          //.attr('dy', 0) //功能同上 纵向 值为0时可不写
+          .attr("text-anchor", d => {
+            return d.children ? "end" : "start"; // text-anchor属性控制文本样式 start右上 end左下 middle中间
+          });
       });
     }
   }
@@ -102,7 +98,7 @@ export default {
   fill: #fff;
   stroke: steelblue;
   stroke-width: 1.5px;
-}   
+}
 
 .node text {
   font-size: 12px;
