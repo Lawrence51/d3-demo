@@ -42,36 +42,73 @@ export default {
         .attr("transform", "translate(50,0)");
 
       // 2.生成树状布局，设置尺寸 d3.layout.tree
-      let tree = d3.layout.tree()
-      .size([width, height - 200]);
+      let tree = d3.layout.tree().size([width, height - 200]);
 
       // 3.对角线生成器
       // d3.svg.diagonal对角线生成器 v5 已更换
       // diagonal.projection 设置或选择一个点作为转换
-      let diagonal = d3.svg.diagonal()
-            .projection(function (d) {
-                return [d.y, d.x];
-            });
+      let diagonal = d3.svg.diagonal().projection(function(d) {
+        return [d.y, d.x];
+      });
 
       //请求数据 json()基于ajax， v5 更改为promise
-      d3.json("/data/city.json", function (err, root) {
-          // a) 获取节点数组 nodes 和 连接数组 links
-            var nodes = tree.nodes(root);
-            var links = tree.links(nodes);
+      d3.json("/data/city.json", function(err, root) {
+        // a) 获取节点数组 nodes 和 连接数组 links
+        var nodes = tree.nodes(root);
+        var links = tree.links(nodes);
 
-            // b) 生成连线
-            let link = svg.selectAll('.link')
-                .data(links)
-                .enter()
-                .append('path')
-                .attr('class', 'link')
-                .attr('d', diagonal)
-      })
+        // b) 生成连线
+        let link = svg
+          .selectAll(".link")
+          .data(links)
+          .enter()
+          .append("path")
+          .attr("class", "link")
+          .attr("d", diagonal);
 
+        //生成节点
+        let node = svg
+          .selectAll(".node")
+          .data(nodes)
+          .enter()
+          .append("g")
+          .attr("class", "node")
+          .attr("transform", d => {
+            return "translate(" + d.y + "," + d.x + ")";
+          });
+
+        // d） 加圆圈
+        node.append("circle").attr("r", 5);
+        console.log(node)
+        // e) 加上文本
+        node.append("text").text(d => d.name)
+        .attr("dx", d => (d.children ? -15 : 15)) //根绝是否有子节点来决定文字展示的位置，以免遮盖子节点 横向
+        //.attr('dy', 0) //功能同上 纵向 值为0时可不写
+        .attr('text-anchor',d=>{
+          return d.children ? 'end' : 'start' // text-anchor属性控制文本样式 start右上 end左下 middle中间
+        })
+
+
+
+      });
     }
   }
 };
 </script>
 <style>
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}   
 
+.node text {
+  font-size: 12px;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
 </style>
