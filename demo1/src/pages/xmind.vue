@@ -53,8 +53,8 @@ export default {
           let nodes = tree.nodes(root);
           let links = tree.links(nodes);
 
-          //计算节点坐标 平滑过渡 并且让节点与深度正相关
-          nodes.forEach(d => (d.y = d.depth * 180)); // depth系数
+          //计算节点坐标 平滑过渡 并且让节点与深度正相关 180是比例 depth是层数
+          nodes.forEach(d => (d.y = d.depth * 180));
 
           //节点处理
           let nodeUpdate = svg.selectAll(".node").data(nodes, d => d.name);
